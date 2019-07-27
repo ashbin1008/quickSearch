@@ -1,0 +1,4 @@
+<aura:component implements="lightning:utilityItem">
+    Hello World
+    <c:quickSearch />
+</aura:component>

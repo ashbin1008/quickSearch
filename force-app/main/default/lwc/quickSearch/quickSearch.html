@@ -1,0 +1,25 @@
+<template>
+    <div>
+        <!-- <template if:true={metaDataOptions.data}>
+            <template for:each={metaDataOptions.data} for:item="item">
+                <span key={item.name}>
+                    {item.label}
+                </span>
+            </template>
+        </template>
+        <template if:true={metaDataOptions.error}>
+            {metaDataOptions.error}
+        </template> -->
+        <template if:true={metaDataOptions.data}>
+            <input list="browsers-11" name="browser" class="slds-input" />
+            <datalist id="browsers-11" class="slds-select">
+                <template for:each={metaDataOptions.data} for:item='item'>
+                    <option key={item.name} value={item.label}>{item.label}</option>
+                </template>
+            </datalist>
+        </template>
+        <template if:true={metaDataOptions.error}>
+            {metaDataOptions.error}
+        </template>
+    </div>
+</template>

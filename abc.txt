@@ -1,0 +1,37 @@
+convert javascript button to vf page button
+check for navigation between screens in lightning
+Home page & side bar components
+check for hardcoding of URL navigation
+---------------------------------------------------------------
+---------------------------------------------------------------
+sfdx force:auth:web:login --setdefaultdevhubusername --setalias DevHub -> to conect a DevHub org
+
+sfdx force:org:list -> to list all orgs
+
+sfdx force:alias:set DevHub=quick@code.search -> to set alias
+
+sfdx force:alias:list -> to list all alias
+
+sfdx force:config:set defaultdevhubusername=DevHub --global -> to set DevHub as default working
+
+sfdx force:limits:api:display -u DevHub -> List limits for org
+
+sfdx force:org:create -s -f config/project-scratch-def.json -a QuickSearch -> creates scratch org
+
+// Successfully created scratch org: 00D0p0000000QzjEAE, username: test-xm16vu4uyb3x@example.com
+
+//Creates account record
+sfdx force:data:record:create -s Account -v "Name='Marriott Marquis' BillingStreet='780 Mission St' BillingCity='San Francisco' BillingState='CA' BillingPostalCode='94103' Phone='(415) 896-1600' Website='www.marriott.com'"
+
+//Export data into local
+sfdx force:data:tree:export -q "SELECT FirstName, LastName ,Phone, MobilePhone FROM Contact" -d ./data
+
+//Imports data into salesforce
+sfdx force:data:tree:import --sobjecttreefiles data/Account.json
+
+sfdx force:source:push --json --loglevel fatal -> push to scratch org
+
+//Creates LWC component
+sfdx force:lightning:component:create --type lwc --componentname quickSearch --outputdir force-app/main/default/lwc
+
+sfdx force:org:open -> to open org in browser
