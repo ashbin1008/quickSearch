@@ -1,0 +1,12 @@
+<template>
+    <!-- <input list="metaDataOptions" name="item1" class="slds-input" onchange={selectMetaDataOption} /> -->
+    <lightning-input type="text" name="input1" label={label} onchange={selectOption}>
+    </lightning-input>
+    <div class="slds-select">
+        <template for:each={displayOptions} for:item='item'>
+            <option key={item.name} value={item.name}>
+                {item.label}
+            </option>
+        </template>
+    </div>
+</template>
