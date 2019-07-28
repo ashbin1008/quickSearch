@@ -1,5 +1,5 @@
 <template>
-    <lightning-input type="text" name="input1" label={label} onchange={filterOptions} value={searchKey}>
+    <!-- <lightning-input type="text" name="input1" label={label} onchange={filterOptions} value={searchKey}>
     </lightning-input>
     <div class="slds-select">
         <template for:each={displayOptions} for:item='item'>
@@ -7,5 +7,37 @@
                 {item.label}
             </div>
         </template>
+    </div> -->
+
+    <div class="status-box">
+        <div class="input-text" onclick={showDropDown}>
+            <lightning-input class="query-inputText" type="text" name="input1" label={label} onchange={filterOptions}
+                value={searchKey}></lightning-input>
+
+            <!-- <lightning-button-icon variant="bare" iconName="utility:down" size="small" alternativeText="{!$Label.c.Selected}" class="dropdown-icon" onclick="{!c.hideDropDown}" /> -->
+        </div>
+        <div class={optionsList}>
+            <ul class="slds-dropdown__list">
+                <template for:each={displayOptions} for:item='item'>
+                    <span key={item.value}>
+                        <li onclick={selectOption}
+                            class="slds-is-selected"
+                            title={item.label}>
+                            <span class="slds-lookup__item-action slds-lookup__item-action_label">
+                                <!-- <lightning:icon iconName="utility:check" size="x-small" alternativeText="Check" class="{!join(' ', 'slds-icon_selected', (option.defaultSelected ? 'opacity-1' : 'opacity-0'))}" /> -->
+                                <span class="slds-truncate">
+                                    <span>{item.label}</span>
+                                </span>
+                            </span>
+                        </li>
+                    </span>
+                </template>
+                <template if:true={displayOptions}>
+                    <div class="no-data-found">
+                        <p>No data found</p>
+                    </div>
+                </template>
+            </ul>
+        </div>
     </div>
 </template>

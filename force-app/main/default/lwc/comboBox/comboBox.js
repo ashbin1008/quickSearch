@@ -5,6 +5,7 @@ export default class ComboBox extends LightningElement {
     
     @track searchKey = '';
     @track displayOptions;
+    @track optionsList = 'hide';
 
     renderedCallback() {
         if (!this.displayOptions) {
@@ -12,6 +13,7 @@ export default class ComboBox extends LightningElement {
         }
     }
     filterOptions(event) {
+        this.optionsList = 'slds-dropdown slds-dropdown_left dropdown_max-width';
         this.searchKey = event.target.value;
         window.clearTimeout(this.delayTimeout);
         
