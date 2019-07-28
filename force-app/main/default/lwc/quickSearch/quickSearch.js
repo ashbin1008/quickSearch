@@ -16,26 +16,26 @@ export default class QuickSearch extends NavigationMixin(LightningElement) {
     // pageReference;
 
     renderedCallback() {
-        let datalists = this.template.querySelectorAll("datalist");
-        let inputElements = this.template.querySelectorAll('input');
-        if (datalists) {
-            datalists.forEach(function(item, index) {
-                item.setAttribute("id", index ? "selectedMetaDataItems" : "metaDataOptions");
-            });
-        }
-        if (inputElements) {
-            inputElements.forEach(function (item) {
-                item.addEventListener('input', function () {
-                    var value = this.value;
-                    var opt = [].find.call(this.list.options, function (option) {
-                        return option.value === value;
-                    });
-                    if (opt) {
-                        this.value = opt.label;
-                    }
-                });
-            });
-        }
+        // let datalists = this.template.querySelectorAll("datalist");
+        // let inputElements = this.template.querySelectorAll('input');
+        // if (datalists) {
+        //     datalists.forEach(function(item, index) {
+        //         item.setAttribute("id", index ? "selectedMetaDataItems" : "metaDataOptions");
+        //     });
+        // }
+        // if (inputElements) {
+        //     inputElements.forEach(function (item) {
+        //         item.addEventListener('input', function () {
+        //             var value = this.value;
+        //             var opt = [].find.call(this.list.options, function (option) {
+        //                 return option.value === value;
+        //             });
+        //             if (opt) {
+        //                 this.value = opt.label;
+        //             }
+        //         });
+        //     });
+        // }
     }
     
     selectMetaDataOption(event) {

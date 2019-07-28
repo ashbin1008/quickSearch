@@ -1,17 +1,22 @@
 import { LightningElement, track, api } from 'lwc';
-
 export default class ComboBox extends LightningElement {
     @api options = [];
     @api label = "Please Select Options";
-    @track displayOptions = [];
+    
+    @track searchKey = '';
+    @track displayOptions;
 
     renderedCallback() {
-        this.displayOptions = this.options;
-    }
-    selectOption(event) {
-        let value = event.target.value;
-        if (value && Array.isArray(this.options)) {
-            this.displayOptions = this.options.filter(word => word.includes(value));
+        if (!this.displayOptions) {
+            this.displayOptions = this.options;
         }
+    }
+    filterOptions(event) {
+        this.searchKey = event.target.value;
+        window.clearTimeout(this.delayTimeout);
+        
+        this.delayTimeout = window.setTimeout(() => {
+            this.displayOptions = this.options.filter(word => word.label.toLowerCase().includes(this.searchKey.toLowerCase()));
+        }, 500);
     }
 }
