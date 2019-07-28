@@ -4,59 +4,55 @@ import getMetaDataOptions from '@salesforce/apex/QuickSearchController.getMetaDa
 import getSelectedMetaDataItems from '@salesforce/apex/QuickSearchController.getSelectedMetaDataItems';
 
 export default class QuickSearch extends NavigationMixin(LightningElement) {
-    @wire(getMetaDataOptions) metaDataOptions;
+    @wire(getMetaDataOptions)
+    wiredMetaDataOptions({
+        error,
+        data
+    }) {
+        if (data) {
+            this.metaDataOptions = data;
+        } else if (error) {
+            this.metaDataOptions = [];
+        }
+    }
     
     @wire(getSelectedMetaDataItems, {
         "selectedMetaDataOption": '$selectedMetaDataOption'
-    }) selectedMetaDataItems;
-    @track selectedMetaDataOption = '';
-    // @track recordId = '';
-    // @track objectApiName = '';
-    // @track navigationUrl = '';
-    // pageReference;
-
-    renderedCallback() {
-        // let datalists = this.template.querySelectorAll("datalist");
-        // let inputElements = this.template.querySelectorAll('input');
-        // if (datalists) {
-        //     datalists.forEach(function(item, index) {
-        //         item.setAttribute("id", index ? "selectedMetaDataItems" : "metaDataOptions");
-        //     });
-        // }
-        // if (inputElements) {
-        //     inputElements.forEach(function (item) {
-        //         item.addEventListener('input', function () {
-        //             var value = this.value;
-        //             var opt = [].find.call(this.list.options, function (option) {
-        //                 return option.value === value;
-        //             });
-        //             if (opt) {
-        //                 this.value = opt.label;
-        //             }
-        //         });
-        //     });
-        // }
+    })
+    wiredMetaDataItems({
+        error,
+        data
+    }) {
+        if (data) {
+            this.selectedMetaDataItems = [];
+            window.setTimeout(() => {
+                this.selectedMetaDataItems = data;
+            }, 200);
+        } else if (error) {
+            this.selectedMetaDataItems = [];
+        }
     }
+
+    @track metaDataOptions = [];
+    @track selectedMetaDataItems = [];
+    @track selectedMetaDataOption = '';
     
-    selectMetaDataOption(event) {
-        this.selectedMetaDataOption = event.target.value;
+    selectMetaData(event) {
+        this.selectedMetaDataOption = event.detail.value;
     }
     
     selectMetaDataItem(event) {
         if (this.selectedMetaDataOption === 'apexclass') {
-            // this.recordId = event.target.value;
-            // this.objectApiName = "ApexClass";
-            // this[NavigationMixin.Navigate](this.pageReference);
-            let urlToNavigate = "/lightning/setup/ApexClasses/page?address=/" + event.target.value;
+            let urlToNavigate = event.detail.value;
+            this.navigateToRecordViewPage(undefined, urlToNavigate);
+        } else if (this.selectedMetaDataOption === 'apexpages') {
+            let urlToNavigate = event.detail.value;
             this.navigateToRecordViewPage(undefined, urlToNavigate);
         }
     }
 
     navigateToRecordViewPage(pageReference, urlToNavigate) {
         if (urlToNavigate) {
-            // this[NavigationMixin.GenerateUrl](pageReference).then(function(url) {
-            //     urlToNavigate = url;
-            // });
             window.open(urlToNavigate, "_blank");
         } else {
             this[NavigationMixin.Navigate](pageReference);

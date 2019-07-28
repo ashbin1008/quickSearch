@@ -1,20 +1,9 @@
 <template>
-    <!-- <lightning-input type="text" name="input1" label={label} onchange={filterOptions} value={searchKey}>
-    </lightning-input>
-    <div class="slds-select">
-        <template for:each={displayOptions} for:item='item'>
-            <div key={item.value} data-value={item.value}>
-                {item.label}
-            </div>
-        </template>
-    </div> -->
-
     <div class="status-box">
         <div class="input-text" onclick={showDropDown}>
-            <lightning-input class="query-inputText" type="text" name="input1" label={label} onchange={filterOptions}
+            <lightning-input type="text" name="input1" label={label} onfocus={openDropDown} 
+                onblur={closeDropDown} onchange={filterOptions}
                 value={searchKey}></lightning-input>
-
-            <!-- <lightning-button-icon variant="bare" iconName="utility:down" size="small" alternativeText="{!$Label.c.Selected}" class="dropdown-icon" onclick="{!c.hideDropDown}" /> -->
         </div>
         <div class={optionsList}>
             <ul class="slds-dropdown__list">
@@ -22,9 +11,14 @@
                     <span key={item.value}>
                         <li onclick={selectOption}
                             class="slds-is-selected"
+                            data-value={item.value}
+                            data-label={item.label}
                             title={item.label}>
                             <span class="slds-lookup__item-action slds-lookup__item-action_label">
-                                <!-- <lightning:icon iconName="utility:check" size="x-small" alternativeText="Check" class="{!join(' ', 'slds-icon_selected', (option.defaultSelected ? 'opacity-1' : 'opacity-0'))}" /> -->
+                                <!-- <lightning-button-icon icon-name="utility:check" size="medium" variant="bare"
+                                    alternative-text="Check" class={checkBoxClass} data-selected={item.selected}>
+                                    "slds-icon_selected opacity-1 opacity-0"
+                                </lightning-button-icon> -->
                                 <span class="slds-truncate">
                                     <span>{item.label}</span>
                                 </span>
@@ -32,7 +26,7 @@
                         </li>
                     </span>
                 </template>
-                <template if:true={displayOptions}>
+                <template if:true={isDisplayOptionsPresent}>
                     <div class="no-data-found">
                         <p>No data found</p>
                     </div>
