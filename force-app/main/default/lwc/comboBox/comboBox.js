@@ -7,9 +7,13 @@ export default class ComboBox extends LightningElement {
     @track displayOptions = [];
     @track optionsList = "hide";
 
-    renderedCallback() {
-        if (!this.displayOptions || !this.displayOptions.length) {
-            this.displayOptions = this.options || [];
+    // calls after every rendering change
+    // renderedCallback(){}
+
+    // initialize component
+    connectedCallback() {
+        if (this.options.length) {
+            this.displayOptions = this.options;
         }
     }
     filterOptions(event) {

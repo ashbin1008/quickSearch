@@ -2,7 +2,7 @@
     <div class="status-box">
         <div class="input-text" onclick={showDropDown}>
             <lightning-input type="text" name="input1" label={label} onfocus={openDropDown} 
-                onblur={closeDropDown} onchange={filterOptions}
+                onblur={closeDropDown} onchange={filterOptions} autocomplete="off"
                 value={searchKey}></lightning-input>
         </div>
         <div class={optionsList}>

@@ -3,11 +3,11 @@
         "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
-            "c/quickSearch": [
-                "quickSearch/quickSearch.js"
-            ],
             "c/comboBox": [
                 "comboBox/comboBox.js"
+            ],
+            "c/quickSearch": [
+                "quickSearch/quickSearch.js"
             ]
         }
     },
