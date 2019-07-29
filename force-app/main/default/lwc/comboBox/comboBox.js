@@ -21,6 +21,7 @@ export default class ComboBox extends LightningElement {
         this.searchKey = event.target.value;
         window.clearTimeout(this.delayTimeout);
         
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.delayTimeout = window.setTimeout(() => {
             this.displayOptions = this.options.filter(word => word.label.toLowerCase().includes(this.searchKey.toLowerCase()));
         }, 500);
@@ -31,7 +32,9 @@ export default class ComboBox extends LightningElement {
         this.optionsList = 'slds-dropdown slds-dropdown_left dropdown_max-width';
     }
     closeDropDown() {
-        window.setTimeout(() => {
+        window.clearTimeout(this.timeoutForDropDownClose);
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        this.timeoutForDropDownClose = window.setTimeout(() => {
             this.optionsList = "hide";
         }, 200);
     }

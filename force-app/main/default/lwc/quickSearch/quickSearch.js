@@ -25,6 +25,7 @@ export default class QuickSearch extends NavigationMixin(LightningElement) {
     }) {
         if (data) {
             this.selectedMetaDataItems = [];
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
             window.setTimeout(() => {
                 this.selectedMetaDataItems = data;
             }, 200);
