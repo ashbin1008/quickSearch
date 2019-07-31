@@ -43,10 +43,10 @@ export default class QuickSearch extends NavigationMixin(LightningElement) {
     }
     
     selectMetaDataItem(event) {
-        if (this.selectedMetaDataOption === 'apexclass') {
-            let urlToNavigate = event.detail.value;
-            this.navigateToRecordViewPage(undefined, urlToNavigate);
-        } else if (this.selectedMetaDataOption === 'apexpages') {
+        var sourceList = [];
+        if (sourceList.includes(this.selectedMetaDataOption)) {
+            // TODO navigate using NavigationMixin
+        } else {
             let urlToNavigate = event.detail.value;
             this.navigateToRecordViewPage(undefined, urlToNavigate);
         }

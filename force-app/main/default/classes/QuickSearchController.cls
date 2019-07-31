@@ -1,26 +1,23 @@
 public with sharing class QuickSearchController {
     @AuraEnabled(cacheable=true)
     public static List<SelectOption> getMetaDataOptions() {
-        // List<Contact> contactList = [SELECT Id, Name  FROM Contact limit 50];
 
         List<SelectOption> optionList = new List<SelectOption>();
-        optionList.add(new SelectOption('Apex Class', 'apexclass'));
-        optionList.add(new SelectOption('Layout', 'layout'));
-        optionList.add(new SelectOption('Apex Pages', 'apexpages'));
-        optionList.add(new SelectOption('Static Resources', 'staticresources'));
-        optionList.add(new SelectOption('Visualforce Components', 'visualforcecomponents'));
-        optionList.add(new SelectOption('Objects', 'objects'));
-        optionList.add(new SelectOption('Email Templates', 'emailtemplates'));
-        optionList.add(new SelectOption('Worlkflow Rules', 'worlkflowrules'));
-        optionList.add(new SelectOption('Validation Rules', 'validationrules'));
-        optionList.add(new SelectOption('Flows', 'flows'));
-        optionList.add(new SelectOption('Process Builders', 'processbuilders'));
-        optionList.add(new SelectOption('Approval Processes', 'approvalprocesses'));
-        optionList.add(new SelectOption('Triggers', 'triggers'));
-        optionList.add(new SelectOption('Aura Components', 'auracomponents'));
-        optionList.add(new SelectOption('Lightning Pages', 'lightningpages'));
-        optionList.add(new SelectOption('Buttons & Quick Actions', 'buttonsquickactions'));
-        // optionList.add(new SelectOption('Lightning Web Components', 'lightningwebcomponents'));
+        optionList.add(new SelectOption('Apex Class', 'Apex Class'));
+        optionList.add(new SelectOption('Layout', 'Layout'));
+        optionList.add(new SelectOption('Apex Pages', 'Apex Pages'));
+        optionList.add(new SelectOption('Static Resources', 'Static Resources'));
+        optionList.add(new SelectOption('Visualforce Components', 'Visualforce Components'));
+        optionList.add(new SelectOption('Objects', 'Objects'));
+        optionList.add(new SelectOption('Email Templates', 'Email Templates'));
+        optionList.add(new SelectOption('Worlkflow Rules', 'Worlkflow Rules'));
+        optionList.add(new SelectOption('Validation Rules', 'Validation Rules'));
+        optionList.add(new SelectOption('Flows', 'Flows'));
+        optionList.add(new SelectOption('Process Builder', 'Process Builder'));
+        optionList.add(new SelectOption('Triggers', 'Triggers'));
+        optionList.add(new SelectOption('Aura Components', 'Aura Components'));
+        optionList.add(new SelectOption('Lightning Pages', 'Lightning Pages'));
+        optionList.add(new SelectOption('Buttons & Quick Actions', 'Buttons & Quick Actions'));
 
         return optionList;
     }
@@ -33,63 +30,91 @@ public with sharing class QuickSearchController {
         List<SelectOption> optionList = new List<SelectOption>();
         String baseURL = URL.getSalesforceBaseUrl().toExternalForm()+'/lightning/setup/';
         switch on selectedMetaDataOption {
-            when 'apexclass' {
-                for(Sobject records : Database.query('SELECT ID, Name FROM ApexClass Order By Name')){    
-                    optionList.add(new SelectOption(records.get('Name'), baseURL + 'ApexClasses/page?address=%2F' + records.get('Id')));
+            when 'Apex Class' {
+                for(ApexClass records : [SELECT ID, Name FROM ApexClass Order By Name]){  
+                    optionList.add(new SelectOption(records.Name , baseURL + 'ApexClasses/page?address=/' + records.Id));
                 }
             }
-            when 'layout' {
+            when 'Layout' {
                 MetadataResponseWrapper metaResults = retrieveFromToolingApi('SELECT Id, Name, EntityDefinition.DeveloperName FROM Layout ORDER BY Name');
                 for(MetaDataRecords metRes : metaResults.records){
-                    optionList.add(new SelectOption(metRes.Name, baseURL + 'ObjectManager/' + metRes.entityDefinition.DeveloperName + '/PageLayouts/' + metRes.Id +'/view'));
+                    optionList.add(new SelectOption(metRes.Name, baseURL + 'ObjectManager/' + (metRes.entityDefinition != null ? metRes.entityDefinition.DeveloperName : '') + '/PageLayouts/' + metRes.Id +'/view'));
                 }
             }
-            when 'apexpages' {
-                for(Sobject records : Database.query('SELECT ID, Name FROM ApexPage ORDER BY Name')){    
-                    optionList.add(new SelectOption(records.get('Name'), baseURL + 'ApexPages/page?address=%2F' + records.get('Id')));
+            when 'Apex Pages' {
+                for(ApexPage records : [SELECT ID, Name FROM ApexPage ORDER BY Name]){    
+                    optionList.add(new SelectOption(records.Name, baseURL + 'ApexPages/page?address=/' + records.Id));
                 }
             }
-            when 'staticresources' {
-                for(Sobject records : Database.query('SELECT ID, Name FROM StaticResource ORDER BY Name')){    
-                    optionList.add(new SelectOption(records.get('Name'), baseURL + 'StaticResources/page?address=%2F' + records.get('Id')));
+            
+            when 'Static Resources' {
+                for(StaticResource records : [SELECT ID, Name FROM StaticResource ORDER BY Name]){    
+                    optionList.add(new SelectOption(records.Name, baseURL + 'StaticResources/page?address=/' + records.Id));
                 }
             }
-            when 'visualforcecomponents' {
-                for(Sobject records : Database.query('SELECT ID, Name FROM ApexComponent ORDER BY Name')){    
-                    optionList.add(new SelectOption(records.get('Name'), baseURL + 'ApexComponents/page?address=%2F' + records.get('Id')));
+            when 'Visualforce Components' {
+                for(ApexComponent records : [SELECT ID, Name FROM ApexComponent ORDER BY Name]){    
+                    optionList.add(new SelectOption(records.Name, baseURL + 'ApexComponents/page?address=/' + records.Id));
                 }
             }
-            when 'Object' {
+            when 'Objects' {
                 for(String records : Schema.getGlobalDescribe().keySet()){    
                     optionList.add(new SelectOption(records, baseURL + 'ObjectManager/' + records + '/Details/view'));
                 }
             }
-            when 'emailtemplates' {
-                for(Sobject records : Database.query('SELECT ID, Name FROM EmailTemplate ORDER BY Name')){    
-                    optionList.add(new SelectOption(records.get('Name'), baseURL + 'CommunicationTemplatesEmail/page?address=%2F' + records.get('Id')));
+            when 'Email Templates' {
+                for(EmailTemplate records : [SELECT ID, Name FROM EmailTemplate ORDER BY Name]){    
+                    optionList.add(new SelectOption(records.Name, baseURL + 'CommunicationTemplatesEmail/page?address=/' + records.Id));
                 }
             }
-            when 'worlkflowrules' {
+            when 'Worlkflow Rules' {
                 MetadataResponseWrapper metaResults = retrieveFromToolingApi('SELECT Id, Name FROM WorkflowRule ORDER BY Name');
                 for(MetaDataRecords metRes : metaResults.records){
-                    optionList.add(new SelectOption(metRes.Name, baseURL + 'WorkflowRules/page?address=%2F' + metRes.Id + '&nodeId=WorkflowRules'));
+                    optionList.add(new SelectOption(metRes.Name, baseURL + 'WorkflowRules/page?nodeId=WorkflowRules&address=/' + metRes.Id));
                 }
             }
-            when 'validationrules' {
+            when 'Validation Rules' {
                 MetadataResponseWrapper metaResults = retrieveFromToolingApi('SELECT Id, ValidationName,EntityDefinition.DeveloperName FROM ValidationRule ORDER BY ValidationName');
                 for(MetaDataRecords metRes : metaResults.records){
                     optionList.add(new SelectOption(metRes.ValidationName, baseURL + 'ObjectManager/'+ metRes.entityDefinition.DeveloperName
                                                      + '/ValidationRules/' + metRes.Id + '/view'));
                 }
             }
-            when 'flows' {
-                MetadataResponseWrapper metaResults = retrieveFromToolingApi('SELECT Id, DefinitionID, MasterLabel, VersionNumber FROM FLOW ORDER BY MasterLabel');
+            when 'Process Builder' {
+                MetadataResponseWrapper metaResults = retrieveFromToolingApi('SELECT Id, DefinitionID, MasterLabel, VersionNumber FROM FLOW where ProcessType = \'Workflow\' or ProcessType = \'InvocableProcess\' ORDER BY MasterLabel');
                 for(MetaDataRecords metRes : metaResults.records){
-                    optionList.add(new SelectOption(metRes.MasterLabel+' '+metRes.VersionNumber, URL.getSalesforceBaseUrl().toExternalForm() + 
-                                                                                                'builder_platform_interaction/flowBuilder.app?flowDefId='
-                                                                                                + metRes.definationID + '&flowId=' + metRes.Id));
+                    optionList.add(new SelectOption(metRes.MasterLabel+' '+metRes.VersionNumber, baseURL+'ProcessAutomation/home'));
                 }
             }
+            when 'Flows' {
+                MetadataResponseWrapper metaResults = retrieveFromToolingApi('SELECT Id, DefinitionID, MasterLabel, VersionNumber FROM FLOW where ProcessType = \'Flow\' or ProcessType = \'AutoLaunchedFlow\' ORDER BY MasterLabel');
+                for(MetaDataRecords metRes : metaResults.records){
+                    optionList.add(new SelectOption(metRes.MasterLabel+' '+metRes.VersionNumber, baseURL + 'InteractionProcesses/page?address=/' + metRes.definitionID));
+                }
+            }
+            when 'Triggers' {
+                for(ApexTrigger records : [SELECT ID, Name FROM ApexTrigger Order By Name]){    
+                    optionList.add(new SelectOption(records.Name, baseURL + 'ApexClasses/page?address=/' + records.Id));
+                }
+            }
+            when 'Aura Components' {
+                for(AuraDefinitionBundle records : [SELECT ID, DeveloperName FROM AuraDefinitionBundle Order By DeveloperName]){    
+                    optionList.add(new SelectOption(records.DeveloperName, baseURL + 'LightningComponentBundles/page?address=/' + records.Id));
+                }
+            }
+            when 'Lightning Pages' {
+                MetadataResponseWrapper metaResults = retrieveFromToolingApi('SELECT Id, DeveloperName FROM FlexiPage ORDER BY DeveloperName');
+                for(MetaDataRecords metRes : metaResults.records){
+                    optionList.add(new SelectOption(metRes.DeveloperName, baseURL + 'FlexiPageList/page?address=/' + metRes.Id));
+                }
+            }
+            when 'Buttons & Quick Actions' {
+                for(WebLink records : [SELECT ID, Name,PageOrSobjectType FROM WebLink Order By Name]){   
+                    optionList.add(new SelectOption(records.Name, baseURL + 'ObjectManager/' + records.PageOrSobjectType + 
+                                                                        '/ButtonsLinksActions/'+ records.Id+'/view'));
+                }
+            }
+            
         }
         return optionList;
     }
@@ -128,7 +153,7 @@ public with sharing class QuickSearchController {
     }
     public class MetaDataRecords {
         @AuraEnabled public String id;
-        @AuraEnabled public String definationID;
+        @AuraEnabled public String definitionID;
         @AuraEnabled public String name;
         @AuraEnabled public String developerName;
         @AuraEnabled public String masterLabel;

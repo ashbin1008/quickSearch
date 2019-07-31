@@ -3,30 +3,9 @@
     height: auto;
 }
 
-.status-box .slds-dropdown_left {
-    min-width: 100%;
-    max-width: 100%;
-}
-
-.status-box .slds-dropdown_left::-webkit-scrollbar {
-    width: 5px;
-}
-
-.status-box .slds-dropdown_left::-webkit-scrollbar-track {
-    background-color: transparent;
-}
-
-.status-box .slds-dropdown_left::-webkit-scrollbar-thumb {
-    background-color: #ccd5e4;
-    border-radius: 5px;
-}
-
-.status-box .slds-dropdown_left::-webkit-scrollbar-thumb:hover {
-    background-color: #aaaaaa;
-}
-
-.status-box .slds-dropdown_left {
-    margin: 0;
+.status-box .slds-dropdown__list {
+    max-height: 200px;
+    overflow: auto;
 }
 
 .input-text {
