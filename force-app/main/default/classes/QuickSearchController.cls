@@ -25,7 +25,9 @@ public with sharing class QuickSearchController {
     @AuraEnabled(cacheable=true)
     public static List<SelectOption> getSelectedMetaDataItems(String selectedMetaDataOption) {
         if(String.isBlank(selectedMetaDataOption)){
-            throw new AuraHandledException('Invalid Metadata Name');
+            AuraHandledException auraExp = new AuraHandledException('Invalid Metadata Name');
+            auraExp.setMessage('Invalid Metadata Name');
+            throw auraExp;
         }
         List<SelectOption> optionList = new List<SelectOption>();
         String baseURL = URL.getSalesforceBaseUrl().toExternalForm()+'/lightning/setup/';
