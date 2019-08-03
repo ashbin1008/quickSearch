@@ -88,8 +88,12 @@ public with sharing class QuickSearchController {
             }
             when 'Flows' {
                 MetadataResponseWrapper metaResults = retrieveFromToolingApi('SELECT Id, DefinitionID, MasterLabel, VersionNumber FROM FLOW where ProcessType = \'Flow\' or ProcessType = \'AutoLaunchedFlow\' ORDER BY MasterLabel');
+                Set<Id> definationSet = new Set<Id>();
                 for(MetaDataRecords metRes : metaResults.records){
-                    optionList.add(new SelectOption(metRes.MasterLabel+' '+metRes.VersionNumber, baseURL + 'InteractionProcesses/page?address=/' + metRes.definitionID));
+                    if(!definationSet.contains(metRes.definitionID)){
+                        definationSet.add(metRes.definitionID);
+                        optionList.add(new SelectOption(metRes.MasterLabel, baseURL + 'InteractionProcesses/page?address=/' + metRes.definitionID));
+                    }
                 }
             }
             when 'Triggers' {
