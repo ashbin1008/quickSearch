@@ -1,5 +1,5 @@
 @isTest
-public with sharing class QuickSearchControllerTest {
+public with sharing class TestQuickSearchController {
     
      static testMethod void getMetaDataOptions_Positive(){
         List<QuickSearchController.SelectOption> optionList = QuickSearchController.getMetaDataOptions();
@@ -42,7 +42,7 @@ public with sharing class QuickSearchControllerTest {
         optionList = QuickSearchController.getSelectedMetaDataItems('Email Templates');
         System.assertEquals(false, optionList.isEmpty());
 
-        optionList = QuickSearchController.getSelectedMetaDataItems('Worlkflow Rules');
+        optionList = QuickSearchController.getSelectedMetaDataItems('Workflow Rules');
         System.assertEquals(true, optionList.isEmpty());
 
         optionList = QuickSearchController.getSelectedMetaDataItems('Validation Rules');
@@ -65,6 +65,13 @@ public with sharing class QuickSearchControllerTest {
 
         optionList = QuickSearchController.getSelectedMetaDataItems('Buttons & Quick Actions');
         System.assertEquals(false, optionList.isEmpty());
+
+        optionList = QuickSearchController.getSelectedMetaDataItems('Custom Setting');
+        System.assertEquals(true, optionList.isEmpty());
+
+        optionList = QuickSearchController.getSelectedMetaDataItems('MetaDataObjects');
+        System.assertEquals(true, optionList.isEmpty());
+
     }
     public class YourHttpCalloutMockImpl implements HttpCalloutMock {
         public HTTPResponse respond(HTTPRequest req) {
